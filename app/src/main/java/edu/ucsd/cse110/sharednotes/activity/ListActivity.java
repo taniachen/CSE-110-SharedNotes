@@ -18,6 +18,7 @@ import android.widget.EditText;
 
 import edu.ucsd.cse110.sharednotes.R;
 import edu.ucsd.cse110.sharednotes.model.Note;
+import edu.ucsd.cse110.sharednotes.model.NoteAPI;
 import edu.ucsd.cse110.sharednotes.view.NotesAdapter;
 import edu.ucsd.cse110.sharednotes.viewmodel.ListViewModel;
 
@@ -101,11 +102,12 @@ public class ListActivity extends AppCompatActivity {
     }
 
     private ListViewModel setupViewModel() {
-        return new ViewModelProvider(this).get(ListViewModel.class);
+        return new ViewModelProvider(this).get(ListViewModel.class);    //Makes the viewModel of type ListViewModel
     }
 
     @NonNull
     private NotesAdapter setupAdapter(ListViewModel viewModel) {
+        Log.d("tag", "Closing note ^_^");
         NotesAdapter adapter = new NotesAdapter();
         adapter.setHasStableIds(true);
         adapter.setOnNoteClickListener(note -> onNoteClicked(note, viewModel));
@@ -129,7 +131,7 @@ public class ListActivity extends AppCompatActivity {
     @SuppressLint("RestrictedApi")
     private void setupRecycler(NotesAdapter adapter) {
         // We store the recycler view in a field _only_ because we will want to access it in tests.
-        recyclerView = findViewById(R.id.recycler_main);
+        recyclerView = findViewById(R.id.recycler_main);    //THIS IS THE NOTE PREVIEW
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         recyclerView.setAdapter(adapter);
@@ -145,7 +147,11 @@ public class ListActivity extends AppCompatActivity {
 
             // Otherwise, create a new note, persist it...
             var title = input.getText().toString();
-            var note = viewModel.getOrCreateNote(title);
+            //If input = exists in server
+            if (title.equals("hoo")) {
+                Log.d("yee", "yeeee");
+            }
+            var note = viewModel.getOrCreateNote(title);    //Go into ListViewModel
 
             // ...wait for the database to finish persisting it...
             note.observe(this, noteEntity -> {

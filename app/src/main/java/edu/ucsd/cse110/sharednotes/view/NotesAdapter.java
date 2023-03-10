@@ -1,5 +1,6 @@
 package edu.ucsd.cse110.sharednotes.view;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,15 +18,17 @@ import edu.ucsd.cse110.sharednotes.R;
 import edu.ucsd.cse110.sharednotes.model.Note;
 
 public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> {
-    private List<Note> notes = Collections.emptyList();
+    private List<Note> notes = Collections.emptyList(); //LIST OF NOTES
     private Consumer<Note> onNoteClicked;
     private Consumer<Note> onNoteDeleteClicked;
 
     public void setOnNoteClickListener(Consumer<Note> onNoteClicked) {
+        Log.d("NotesAdapter: ", "setOnNoteClickListener()");
         this.onNoteClicked = onNoteClicked;
     }
 
     public void setOnNoteDeleteClickListener(Consumer<Note> onNoteDeleteClicked) {
+        Log.d("NotesAdapter: ", "setOnNoteDeleteClickListener()");
         this.onNoteDeleteClicked = onNoteDeleteClicked;
     }
 
@@ -39,8 +42,12 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
         public final TextView previewView;
         public final View deleteButton;
 
+        /*
+         * CREATES A PREVIEW-NOTE OBJECT
+         */
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+            Log.d("NotesAdapter: ", "ViewHolder()");
             this.itemView = itemView;
 
             // Populate the text views...
@@ -50,6 +57,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
         }
 
         public void bind(Note note) {
+            Log.d("NotesAdapter: ", "bind()");
             nameView.setText(note.title);
             previewView.setText(note.content);
             itemView.setOnClickListener(v -> onNoteClicked.accept(note));
@@ -58,12 +66,14 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
     }
 
     public void setNotes(List<Note> notes) {
+        Log.d("NotesAdapter: ", "setNotes()");
         this.notes = notes;
         notifyDataSetChanged();
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        Log.d("NotesAdapter: ", "onCreateViewHolder()");
         var view = LayoutInflater.from(parent.getContext())
             .inflate(R.layout.note_item, parent, false);
 
@@ -72,6 +82,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+        Log.d("NotesAdapter: ", "onBindViewHolder()");
         var note = notes.get(position);
         holder.bind(note);
     }
